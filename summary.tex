@@ -51,9 +51,41 @@ Requires no new parameter, can be practiced on a closed-source LLM.
 
 \subsubsection*{Zero-Shot}
 Simple prompting is equivalent to zero-shot learning. The model predicts the answer based on the question.
-Example: "Translate English to French: cheese = "
+Example: "Translate English to French: cheese = ".
 
-\subsubsection*{}
+\subsubsection*{In-Context Learning and Few-Shot Learning}
+Learning that contains examples of solutions to the task.
+Example: "Translate English to French: sea otter = loutre de mer. cheese = ".
+
+\subsubsection*{Prompting Terminology}
+
+Pattern:
+A function that maps input to text (i.e. template for $x$).
+Example: $f(x) = "Review: x"$
+
+Verbalizer:
+A function that maps a label to text (i.e. template for $y$).
+Example: $v(y) = "Sentiment: y"$
+
+Zero-shot prompting is using one pattern. Few-shot prompting is using many pairs of patterns and verbalizers and one final pattern.
+Choosing a prompt is important and non-trivial, since experiments show different patterns and verbalizers exhibit large variance on the result accurarcy. Additionaly, it is uncertain how and why in-context learning works.
+Reasons:
+- Different input and output space distributions decrease/increase performance.
+- LLM sees demonstrations not as ordered pairs.
+- Highly dependent on choice, order and term frequency.
+Prompting still works really well in practice and can perform better than smaller task-specific fine tuned models such as BERT.
+
+\subsection*{Parameter Efficient Fine-Tuning}
+
+\subsubsection*{Prompt-based Fine Tuning}
+Prompt-based fine-tuning = prompt + gradient updates.
+Instead of fine-tuning and predicting a [CLS] token for an input sentence, use the masked prompt as input sentence.
+Classical fine-tuning: [CLS] A three-hour cinema master class.
+Prompt-based fine tuning: [CLS] A \_ master class. It was [MASK].
+
+\subsubsection*{Prompt Search}
+
+
 
 
 \end{document}
