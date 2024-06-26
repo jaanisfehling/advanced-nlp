@@ -29,6 +29,31 @@ Autoregressive: Feeds back generated tokens in decoder input.
 \subsection*{Other LLMs}
 \subsubsection*{T5}
 Text-to-Text-Transfer-Transformer.
-Encoder and decoder block.
+Encoder and decoder block, similar to original Attention is all you need paper but with slight modifications.
+
+\subsubsection*{RETRO}
+Retrieval-Enhanced Transformer.
+Enhanced by large text database.
+In total 4\% of GPT-3 size.
+
+\subsection*{Flash Attention}
+Self-attention is the bottleneck when training/inferencing transformers (quadratic time).
+During Attention, tensors are moved from HBM (Hidh Bandwith (GPU) Memory) to SRAM (Shared random-access (GPU) memory) multiple times: Before each operation, the tensors are moved from HBM to SRAM and then written back to HBM.
+Flash Attention fuses multiple operations into one kernel, thus saving load and write operations. It is becoming the standard for transformers.
+
+\subsection*{Fine-Tuning}
+Traditional fine-tuning: Re-train all parameters with a small labelled dataset for example on domain knowledge.
+Traditional fine-tuning with freezing: Freeze a part of the model.
+
+\subsection*{Prompting}
+Removes the need for additional layers for a downstream task. Uses the same format as the pretraining objective of LLMs: We ask the LLM to generate the answer based on a task-specific input.
+Requires no new parameter, can be practiced on a closed-source LLM.
+
+\subsubsection*{Zero-Shot}
+Simple prompting is equivalent to zero-shot learning. The model predicts the answer based on the question.
+Example: "Translate English to French: cheese = "
+
+\subsubsection*{}
+
 
 \end{document}
