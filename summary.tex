@@ -58,11 +58,9 @@ Learning that contains examples of solutions to the task.
 Example: "Translate English to French: sea otter = loutre de mer. cheese = ".
 
 \subsubsection*{Prompting Terminology}
-
 Pattern:
 A function that maps input to text (i.e. template for $x$).
 Example: $f(x) = "Review: x"$
-
 Verbalizer:
 A function that maps a label to text (i.e. template for $y$).
 Example: $v(y) = "Sentiment: y"$
@@ -73,18 +71,73 @@ Reasons:
 - Different input and output space distributions decrease/increase performance.
 - LLM sees demonstrations not as ordered pairs.
 - Highly dependent on choice, order and term frequency.
-Prompting still works really well in practice and can perform better than smaller task-specific fine tuned models such as BERT.
-
-\subsection*{Parameter Efficient Fine-Tuning}
-
-\subsubsection*{Prompt-based Fine Tuning}
-Prompt-based fine-tuning = prompt + gradient updates.
-Instead of fine-tuning and predicting a [CLS] token for an input sentence, use the masked prompt as input sentence.
-Classical fine-tuning: [CLS] A three-hour cinema master class.
+Prompting still works really well in practice and can perform better than smaller task-specific fine tuned models such as BERT.pretrained
 Prompt-based fine tuning: [CLS] A \_ master class. It was [MASK].
 
+\subsection*{Parameter Efficient Fine-Tuning}
 \subsubsection*{Prompt Search}
+Learns tokens in the prompt.
+Instead of fine-tuning and predicting a [CLS] token for an input sentence, use the masked prompt as input sentence.
+Classical fine-tuning: [CLS] A three-hour cinema master class.
+Prompt search: [CLS] A \_ master class. It was [MASK].
 
+\subsubsection*{AutoPrompt}
+Prompt search method.
+Update tokens in the pattern using gradient-guided search.
+Prompt Template: \{Original sentence\}[T][T][T][T][T][MASK], where T are trigger Tokens that are determined using gradient-guided search.
+Example: a real joy. atmosphere alot dialoge Clone totally [MASK].
+
+\subsubsection*{Prompt Tuning}
+Attaches a learnable embedding to the input pattern.
+Example: [EMBED] [CLS] A \_ master class. [MASK].
+Goal: Learn the [EMBED] token.
+
+\subsubsection*{BitFit}
+Only tunes bias in attention and linear layers.
+Hypothesis: LLM does not need to learn new linguistic features, just domain knowledge.
+
+\subsubsection*{Adapters}
+In the Transformer block, after each feed-forward block, add an adapter block and a skip connection.
+The adapter layer is built up like an autoencoder (down- and the up-projects the input).
+Then, only fine tune these adapter blocks.
+
+\subsubsection*{LoRA}
+Low-Rank Adaption of LLMs.
+At each layer, substitute the weight update on $W$ with an update on the low-rank decomposition of $W$ ($AB$).
+$$W_{finetuned} = W_{pretrained} + \Delta W = W_{pretrained} + AB$$
+Low rank means the matrix has much less params the than $W$.
+
+\subsubsection*{(IA)3}
+Infused Adapter by Inhibiting and Amplifying Inner Activations.
+Element-wise rescaling of model activations with a learned vector.
+Separate learned vectors for each task.
+
+\subsection*{Human Preference Tuning}
+Fine tuning is not enough to make a model fully non-harmful/friendly and performant/helpful at the same time.
+Training on human preferences (rankings, scores, etc.) is not differentiable, since no mathematically differentiable function was used to calculate the scores. Therefore, no supervised learning is possible.
+Instead use Reinforcement Learning.
+
+\subsubsection*{Reinforcement Learning with Human Feedback}
+Create a smaller LM, the reward model, which is trained on labelled data (4 answers to a prompt ranked from best to worst).
+The reward model then calculates a reward for each output of the LLM. This reward is used with the PPO algorithm to update the LLM weights.
+To not overfit and let the LLM just "please" the reward model, we calculate a second loss from the LLM output and the old, frozen LLM output. This loss is added to the reward model output before being used in the PPO algorithm.
+Observations:
+- Smaller models get slightly worse, bigger models get even better.
+- Compatible with specialized models (e.g. model for coding)
+- Requires much more human annotation than fine tuning. Possible solution: Use LLMs themselves to indentify bad answers (Constitutional AI/RLAIF)
+
+\subsubsection*{RLAIF}
+Reinforcement Learning with AI Feedback.
+Uses a constitution (Constitutional AI) instead of humans.
+1. Make the model revise harmful answers according to a random principle in the constitution. Then use fine tuning with the revised answers.
+2. Use an off-the-shelf LLM to rate the answers of the fine-tuned model.
+3. Train a reward model on these pairs.
+4. Train the final model with reinforcement learning.
+
+\subsubsection*{DPO}
+Use Direct Policy Optimization instead of reinforcement learning.
+Reformulates the problem into a single cross entropy loss.
+So far better than PPO, but the debate is open.
 
 
 
