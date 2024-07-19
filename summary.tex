@@ -163,7 +163,23 @@ Techniques:
 - Dimensionality reduction
 - Clustering
 - Probing classifier: Train a classifier to evaluate specific properties such as POS, sentiment or NER.
-- Association Tests: 
+- Association Tests: Use cosine similarit to measure association between two concepts and an attribute A and B.
+- POLAR: Subtract two polar opposite embeddings, then muliply with the target word embedding to receive the score of that embedding in the polar opposite embedding space. Disadvantages: requirement of opposites and dictionaries, requirement of quality context examples (potential source of bias).
+
+\subsubsection*{Topic Modelling}
+Identifying abstract themes in a collection of documents.
+Old methods:
+- Latent Dirichlet Allocation: Topics are characterized as a distribution over words.
+- Variational autoencoders: Compression of documents to a topic distribution.
+BERTopic:
+Modular approach to topic modeling. Composed of six steps, each is interchangable:
+1. Generate embeddings (SBERT, spaCy, other transformers)
+2. Dimensionality Reduction (PCA, UMAP, TruncatedSVD)
+3. Clustering (HDBSCAN, k-means, BIRCH)
+4. Tokenizer (CountVectorizer, Jieba, POS)
+5. Weighting scheme (c-tf-idf. c-tf-idf + BM25, c-tf-idf + normalization)
+6. (optional) Representation Tuning (ChatGPT, Llama, MMR)
+
 
 
 
