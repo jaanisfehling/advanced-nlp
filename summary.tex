@@ -40,7 +40,7 @@ In total 4\% of GPT-3 size.
 Self-attention is the bottleneck when training/inferencing transformers (quadratic time).
 During Attention, tensors are moved from HBM (Hidh Bandwith (GPU) Memory) to SRAM (Shared random-access (GPU) memory) multiple times: Before each operation, the tensors are moved from HBM to SRAM and then written back to HBM.
 Flash Attention fuses multiple operations into one kernel, thus saving load and write operations. It is becoming the standard for transformers.
-
+Approximate a complex model with a transparent one
 \subsection*{Fine-Tuning}
 Traditional fine-tuning: Re-train all parameters with a small labelled dataset for example on domain knowledge.
 Traditional fine-tuning with freezing: Freeze a part of the model.
@@ -180,7 +180,47 @@ Modular approach to topic modeling. Composed of six steps, each is interchangabl
 5. Weighting scheme (c-tf-idf. c-tf-idf + BM25, c-tf-idf + normalization)
 6. (optional) Representation Tuning (ChatGPT, Llama, MMR)
 
+\subsection{Explainability and Problem Solving}
+Limitations:
+- Multi-step reasoning is hard for LLMs, they generally greedily produce the next token
+- Hallucinations: LLM data may be incorrect or outdated, LLM output always looks highly plausible.
 
+Explainable AI (XAI) methods:
+- Transparent models: Use inherently transparent models like linear regression or decision trees.
+- Model-specific analysis: Fine grained analysis of small neural networks. I.e. choose a neuron in the network and watch its activation for multiple inputs.
+- Model-agnostic analysis: Find patterns between model input and output
+- Prompting techniques: Make the LLM thought process more transparent (Chain-of-thought)
+
+\subsubsection*{Model-Agnostic Analysis}
+Surrogates: Train a simpler, smaller, transparent model that mimics the big model
+Feature Attribution: Add an importance score to each feature and measure the result. Approaches: Remove or replace tokens in a prompt, measure the gradient of output logits.
+
+SHAP:
+- Task: Predict income of a person using a set of features
+- Question: What was the impact of a certain feature on the prediction?
+- Step 1: Determine all combinations of features
+- Step 2: Train a model for each combination and measure impact of features(s) on prediction
+- Step 3: Calculate marginal contribution of each feature to the prediction
+- Step 4: Interpretation
+
+Chain-of-Thought Promting:
+Similar to few-shot learning, where an example with the thought procedure in the answer is given. Leads to better and more explainable results, but some tasks are still too difficult for Chain-of-Thought.
+Tree-of-Thought:
+4 Components:
+- Thought Decomposition: Decompose thought into smaller, simpler thoughts
+- Though Generator: Generate candidates for the next thought step
+- State Evaluator: Evaluate progress made towards problem solution
+- Search Algorithm: Searching for high-value thoughts
+We can now expore different continuations and evaluate them. This combines pricinples such as Planning, Lookahead and Backtracking.
+Probabilistic Tree-of-Thoughts: Assign probabilities to answers.
+3 types of question answering:
+- Open-Book: Look for answers in the web or DB
+- Closed-Book: LLM generates answer
+- Child-aggregated: Reason about answer by looking at the child answers.
+Difference from regular Tree-of-Thought: The thought decomposition into a tree is done by the LLM instead of the user. The corrections also can be enhanced by choosing from the different question answering strategies based on the assigned probabilities to the answers.
+
+Big Problem in XAI:
+Dilemma between plausability to humans and faithfulness to the model. With our strategies we instead can let the model explain its own reasoning, which kind of solves the dilemma.
 
 
 \end{document}
