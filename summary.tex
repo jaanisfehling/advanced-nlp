@@ -235,5 +235,31 @@ At inference, take random noise as $t = T$ and condition the U-Net with the prom
 \subsection*{Multilinguality}
 Language model as prior: Pre-trained LM's as source of prior knowledge for downstream tasks.
 Deep Fusion: Goal: Translation model from HRL (High resource language) 1 to LRL, but not much data available. Solution: Train transformer on translation of HRL 1 to HRL 2, for which more data to LRL is available. Then replace the decoder with a decoder from HRL 1 to LRL.
+Pivot languages: Use an intermediate language for translating a uncommon translation pair.
+
+
+\section*{Seq2Seq and Evaluation}
+\subsection*{Seq2Seq}
+Features of a good Seq2Seq output:
+- Fluency: Quality of target language text
+- Adequacy: Preservation of exact meaning
+BART:
+- Trained by corrupting text with an arbitrary noise function and learning to reconstruct the oroginal text
+- Mix of Bidirectional Encoder (BERT) and Autoregressive Decoder (GPT)
+Advantage of Seq2Seq: Cross-attention shows influence of input tokens on output tokens. XAI for free.
+PEGASUS:
+- Pre-training objective for abstractive summarization: Gap sentence generation (GSG); generate the missing sentences
+Faithfullness: Staying consistent and thruthful to the source.
+Hallucination: Outputs that are nonsensical or unfaithful to source.
+- Intrinsic: misrepresented information contradicting source.
+- Extrinsic: generating information not contained in the source.
+Textual Entailment: Train a classifier that checks if generated answers are entailed in source.
+Question answering for hallucination detection:
+1. Extract possible answers
+2. Generate questions for these answers
+3. Answer question with source
+4. Compare both answers
+Model-based hallucination detection: Hallucinations show a different cross-attention pattern, can be measured using Wasserstein distance.
+
 
 \end{document}
