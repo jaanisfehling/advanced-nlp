@@ -223,4 +223,17 @@ Big Problem in XAI:
 Dilemma between plausability to humans and faithfulness to the model. With our strategies we instead can let the model explain its own reasoning, which kind of solves the dilemma.
 
 
+\section*{Multimodality and Multilinguality}
+\subsection*{Stable Diffusion}
+Add gaussion noise step by step to an image.
+Use a U-Net to predict all the noise that was added to the original image from all noise steps until $t$. This requires conditioning the U-Net with $t$.
+Then subtract the predicted noise from the noisy input.
+Then, add back $t-$ noise.
+Repeat the steps above until $t = 0$.
+At inference, take random noise as $t = T$ and condition the U-Net with the prompt. Additionally, predict the noise without the prompt and use a divergence measure to amplify the output with the prompt.
+
+\subsection*{Multilinguality}
+Language model as prior: Pre-trained LM's as source of prior knowledge for downstream tasks.
+Deep Fusion: Goal: Translation model from HRL (High resource language) 1 to LRL, but not much data available. Solution: Train transformer on translation of HRL 1 to HRL 2, for which more data to LRL is available. Then replace the decoder with a decoder from HRL 1 to LRL.
+
 \end{document}
