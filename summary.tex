@@ -163,7 +163,7 @@ Techniques:
 - Dimensionality reduction
 - Clustering
 - Probing classifier: Train a classifier to evaluate specific properties such as POS, sentiment or NER.
-- Association Tests: Use cosine similarit to measure association between two concepts and an attribute A and B.
+- Association Tests: Use cosine similarity to measure association between two concepts and attributes A and B.
 - POLAR: Subtract two polar opposite embeddings, then muliply with the target word embedding to receive the score of that embedding in the polar opposite embedding space. Disadvantages: requirement of opposites and dictionaries, requirement of quality context examples (potential source of bias).
 
 \subsubsection*{Topic Modelling}
@@ -338,7 +338,24 @@ Approaches:
 3. Annotate selected data
 4. Add newly labeled examples to training data, then repeat
 
-
+\subsection*{Bias and Ethics}
+Data can be biased ("biased world" issue). Bias can come from the source or the way data was collected. Simple case: Class imbalance. But often detecting bias in data is hard. Its easier to detect bias in the model itself.
+\subsubsection*{Detecting Bias in Systems}
+Association tests:
+Difference between two sets of target words $X$ and $Y$ with respect to two sets of attribute words $A$ and $B$. Cosine similarity can be used as a distance measure. The result determines if the target words $X$ are correlated with attributes $A$ or the targets $Y$ are correlated with attributes $B$ or if there is no bias.
+Error analysis:
+Measure bias directly from performance on test data. Good Example: Performance of NLP tasks in different languages.
+Counterfactual evaluation: Manipulate test cases to change part of the input without changing the target label.
+\subsubsection*{Mitigating Bias}
+Embedding debiasing: Bias means vector difference across unwanted dimensions. We can neutralize, equalize or soften the subspace until tests show no bias. Problem: Embedding analysis shows that bias is still encoded in the model, although not visible in the result.
+Feature invariant methods: Change the training objective to penalize being able to identity protected variables.
+\subsubsection*{Data Augmentation}
+Theoretically, one could alter input data to invert biases. The best approach but not do-able due to cost and time.
+\subsubsection*{Bias Research Problems}
+- Vague as to who is harmed and why
+- What is bias and what not
+- Mismatch between problem and solutions
+- Need to be more clear about what to mitigate
 
 
 
