@@ -240,6 +240,9 @@ Pivot languages: Use an intermediate language for translating a uncommon transla
 
 \section*{Seq2Seq and Evaluation}
 \subsection*{Seq2Seq}
+Source: Input
+Reference: Desired output
+Candidate: Generated output
 Features of a good Seq2Seq output:
 - Fluency: Quality of target language text
 - Adequacy: Preservation of exact meaning
@@ -260,6 +263,64 @@ Question answering for hallucination detection:
 3. Answer question with source
 4. Compare both answers
 Model-based hallucination detection: Hallucinations show a different cross-attention pattern, can be measured using Wasserstein distance.
+
+\subsection*{Evaluation}
+\subsubsection*{Human Evaluation}
+Evaluation of language generation is difficult.
+Human evaluation if gold standard, but expensive. Human evaluation can produce many different, but correct candidates for a source, which limits reproducibility.
+\subsubsection*{Reference-based Evaluation}
+BLEAU:
+- Bilingual Evaluation Understudy
+- Calculates ratio of overlapping $n$-grams (weighted sum over different values for $n$)
+- Add penalty for short sentences
+SacreBLEU:
+- Standardized version of BLEU
+- Not sensitive to tokenization (punctuation, compounds)
+Problems of overlap-based methods:
+- No synonym awareness
+- Only partially robust to word order
+- Cross sentence properties are hard
+BERTScore:
+- Cosine similarity between contextual embeddings of reference and candidate
+Problems:
+- Latent representations are not always distinctive (for example for antonyms)
+- Grammatical correctness not always covered
+- Performance dependent on model strength
+BLEURT: Bilingual Evaluatin Understudy with Representations from transformers
+- Pre-trained BERT with score output
+- Trained on human scores
+- Additional pre-training on synthetic data
+COMET: Cross-linugal Optimized Metrics for Evaluation of Translations
+- Pre-trained multilingual model with score output
+- Trained on human scores
+Leaned Metrics such as BLEURT and COMET are good (best correlation with human scores) but have to be optimized for specific tasks, makes it hard to compare between papers, no one-fits-all solution
+
+\subsubsection*{Reference-free Evaluation}
+Compare semantic overlap against source instead of reference.
+Evaluating with LLMs: No Reference needed, can use few-shot prompting
+
+\subsubsection*{Explainable Scores}
+Jointly learn sentence level score and word level annotations. The evaluation metric adds post-hoc word annotations.
+INSTRUCTSCORE: Explainable score based on LlaMa.
+Candidate Ranking: Models are often confident with their outputs. Idea: Generate multiple translation candidates and rank them with evaluation metric. Then return the highest ranking candidate.
+
+\subsubsection*{Benchmarking LLMs}
+HELM (Holistic Evaluation of Language Models):
+- 87 Scenarios
+- Question answering
+- Summarization
+- Sentiment analysis
+- Reasoning
+Problems:
+- Evaluation is usually few-shot based. Changing things like the prompt template can change model ranks.
+- Data contamination: Benchmark data is open-source, models probably have learned from benchmark data. Some models can even repoduce samples from benchmarks.
+- Saturation: Models already outperform humans
+- Overfitting: Models train on synthetic data from GPT-4, some benchmarks are evaluated by GPT-4
+- Need for multilingual benchmarks
+
+
+
+
 
 
 \end{document}
