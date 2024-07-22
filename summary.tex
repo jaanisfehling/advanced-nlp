@@ -381,13 +381,22 @@ How to evaluate:
 - Groundedness: Referece-free
 - Context relevance: Reference-based (regular IR metrics such as recall/precision)
 Painpoints of RAG:
-- Duplicates
-- Find questions instead of answers
-- Information corruption due to suboptimal chunks
-- No relevant information found
+Find questions instead of answers. Solution: Query expansion:
+- Guess potiential answers for a query using a LLM
+- Retrieve chunks for those answers + the original query
+Suboptimal chunks. Solution: Split text when topic shifts (i.e. when cosine similarity between embeddings changes)
+Solution 2: Hierarchical chunking:
+- Split into smaller chunks iteratively (1. split on doc structure, 2. split on semantic, 3. hierarchical splitting on text length)
+Model cannot deal with non-relevant documents. Solution: Define a similarity threshhold that chunks need to have to be valid context.
+Lack of exact match capabilities. Solution: Hybrid Search: Vector search and keyword search.
+Lost in the middle. Solution: Position crucial data at beginning or end of input context.
 
-
-
+\subsection*{Adapters}
+Insert a small network before the residual addition in the transformer block.
+Will lead to 1-8\% increase in parameters.
+Can train adapter with things like knowledge graph.
+Pre-trained adapters can be re-used.
+LoRA is sometimes still a better approach.
 
 
 
