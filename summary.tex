@@ -319,6 +319,25 @@ Problems:
 - Need for multilingual benchmarks
 
 
+\section*{Data, Bias and Ethics}
+\subsection*{Data}
+\subsection*{Weak Supevision}
+Techniques when labeled data is hard to obtain.
+Approaches:
+- Combination of small amount of human labeled data and a large amount of unlabeled data
+- Define rules and heuristics that can label data automatically (labeling function)
+
+\subsubsection*{Data Augmentation}
+- Character-, word- or sentence-level
+- Synonym replacement, random shuffling
+- Rephrasing, back-translation
+
+\subsubsection*{Active Learning}
+1. Train model with annotated data
+2. Use acquisition function to select examples from unlabeled data
+3. Annotate selected data
+4. Add newly labeled examples to training data, then repeat
+
 
 
 
