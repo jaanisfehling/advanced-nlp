@@ -358,5 +358,37 @@ Theoretically, one could alter input data to invert biases. The best approach bu
 - Need to be more clear about what to mitigate
 
 
+\section*{Conversationl AI and Knowledge Enhancement}
+\subsection*{Dense Passage Retriever}
+Retrive documents and passages from a corpus. Idea: Represent both query and documents in a continuous vector space.
+
+\subsection*{Retrieval Augmented Generation (RAG)}
+Split document corpus into chunks of text and create an index.
+Given a user query, compare the vector representation of that query with the document index. Select all chunks that are similar to the query and append them to the query, then feed into LLM.
+
+\subsubsection*{Chunking}
+Split text into concise information pieces. Splitting is possible based on data structure (document, page, table), text structure (chapter, paragraph), content length or a learned heuristic.
+Chunk boundaries are important to not loose information.
+Metadata: Can be used to hard-filter. Alternatively include as text into the chunk.
+A chunk is then defined as a value and a key (index).
+Key: Embedding vector.
+Value: The text chunk.
+The same LLM is used for creating the chunk embeddings and the query embedding.
+Chunk selection: Cosine similarity, selecting the top $k$ chunks.
+How to evaluate:
+- Answer relevance: Reference-free methods
+- Answer correctness: Reference-based
+- Groundedness: Referece-free
+- Context relevance: Reference-based (regular IR metrics such as recall/precision)
+Painpoints of RAG:
+- Duplicates
+- Find questions instead of answers
+- Information corruption due to suboptimal chunks
+- No relevant information found
+
+
+
+
+
 
 \end{document}
